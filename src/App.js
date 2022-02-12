@@ -1,25 +1,109 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import ToDoListItem from "./ToDoListItem.js"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends Component {
+
+  // ToDoListをstateに定義、初期値はlocalStorageから取得または []
+  state = {
+    todoList: JSON.parse(localStorage.getItem("todoList")) || []
+  }
+
+  // todoList itemの追加
+  addTodo = (item, callBack) => {
+    // todoList stateに追加
+    this.setState(
+      {
+        todoList: this.state.todoList.concat(item)
+      },
+      () => {
+        // localStorageにtodoList stateを保存
+        localStorage.setItem("todoList", JSON.stringify(this.state.todoList))
+        // callBack関数が引数に渡されていた場合に実行
+        callBack && callBack()
+      }
+    )
+  }
+
+  // todoListからitemを削除
+  removeTodo = (item, callBack) => {
+    this.setState(
+      {
+        todoList: this.state.todoList.filter(x => x !== item)
+      },
+      () => {
+        // localStorageにtodoList stateを保存
+        localStorage.setItem("todoList", JSON.stringify(this.state.todoList))
+        // callBack関数が引数に渡されていた場合に実行
+        callBack && callBack()
+      }
+    )
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <form
+          className="App-form"
+          onSubmit={e => {
+            // formのデフォルトのイベントをキャンセル
+            e.preventDefault();
+
+            // idがtitleのElementを取得
+            const titleElement = e.target.elements["title"]
+            // idがdescriptionのElementを取得
+            const descriptionElement = e.target.elements["description"];
+
+            this.addTodo(
+              {
+                title: titleElement.value,
+                description: descriptionElement.value
+              },
+              () => {
+                // stateの変更後に入力した値を空にする
+                titleElement.value = "";
+                descriptionElement.value = "";
+              }
+            )
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <div class="title">メモ帳</div>
+          <p class="text">Reactを使用しての簡易的なメモ帳です</p>
+          <div>
+            <input
+              id="title"
+              placeholder="タイトル"
+              class="input-title"
+            />
+            <textarea
+              id="description"
+              placeholder="本文"
+              class="input-text"
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+            >
+              登録する
+            </button>
+          </div>
+        </form>
+        <div class="ToDoListItem-list">
+        {/* todoList配列の要素数分ToDoListItemコンポーネントを展開 */}
+          {this.state.todoList.map(todo => (
+            <ToDoListItem
+              key={todo.title}
+              title={todo.title}
+              description={todo.description}
+              // クリックされたItemをtodoList stateから削除
+              onClick={() => this.removeTodo(todo)}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
