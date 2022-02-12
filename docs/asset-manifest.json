@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/kami-hiro/react-memo/static/css/main.9eb96578.css",
+    "main.js": "/kami-hiro/react-memo/static/js/main.06504afe.js",
+    "static/js/787.aa97ce86.chunk.js": "/kami-hiro/react-memo/static/js/787.aa97ce86.chunk.js",
+    "index.html": "/kami-hiro/react-memo/index.html",
+    "main.9eb96578.css.map": "/kami-hiro/react-memo/static/css/main.9eb96578.css.map",
+    "main.06504afe.js.map": "/kami-hiro/react-memo/static/js/main.06504afe.js.map",
+    "787.aa97ce86.chunk.js.map": "/kami-hiro/react-memo/static/js/787.aa97ce86.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9eb96578.css",
+    "static/js/main.06504afe.js"
+  ]
+}
